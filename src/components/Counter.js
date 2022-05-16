@@ -1,6 +1,6 @@
 import './Counter.css';
 import { useState } from 'react';
-
+/*
 function Counter(props) {
   // Je kan zo veel states aanmaken als je wil
   const [count, setCount] = useState(0);
@@ -12,7 +12,7 @@ function Counter(props) {
   const count = countState[0]; // First item in a array
   const setCount = countState[1]; // Second item in a array
   */
-
+/*
 
   return (
     <div className="Counter">
@@ -24,3 +24,4 @@ function Counter(props) {
 }
 
 export default Counter;
+*/

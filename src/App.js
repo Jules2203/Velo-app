@@ -5,13 +5,13 @@ function App() {
 
   return (
     <div className="App">
+      <Outlet/>
+      
       <nav>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/settings">Settings</Link>
       </nav>
-
-      <Outlet/>
     </div>
   );
 }

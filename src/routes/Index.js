@@ -1,7 +1,7 @@
 import './Index.css';
 import Hello from '../components/Hello'
 import Counter from '../components/Counter'
-import Search from '../components/Search'
+//import Search from '../components/Search'
 import {useRef, useEffect, useState} from 'react';
 import {getStations as getStationsData, setStations as setStationsData} from '../data/stations';
 import {Link} from 'react-router-dom';
@@ -17,17 +17,10 @@ function Index() {
 
   const filteredStations = stations.filter((station) => station.name.toLowerCase().indexOf(search.toLowerCase()) >= 0)
 
-  let names = ["Niels", "Lena", "Robbe", "Gitte"];
-
-  let nameElements = [];
-  names.forEach((name) => {
-    nameElements.push(<Hello name={name} key={name}/>);
-  })
-
   useEffect(() => {
     if (!stations.length) {
       async function getStations() {
-        const response = await fetch('http://api.citybik.es/v2/networks/velo-antwerpen');
+        const response = await fetch('https://api.citybik.es/v2/networks/velo-antwerpen');
         const json = await response.json();
         setStations(json.network.stations);
         setStationsData(json.network.stations);
@@ -40,8 +33,8 @@ function Index() {
   const mapContainer = useRef(null);
   const map = useRef(null);
 
-  const lat = 51.212202;
-  const lng = 4.427308;
+ // const lat = 51.212202;
+  //const lng = 4.427308;
   const zoom = 11;
 
   useEffect(() => {
@@ -62,7 +55,13 @@ function Index() {
     stations.forEach((station) => {
       const marker = {
         id: station.id,
-        instance: new mapboxgl.Marker().setLngLat([station.longitude, station.latitude]).addTo(map.current)
+        instance: new mapboxgl.Marker().setLngLat([station.longitude, station.latitude])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+              `<h3>${station.id}</h3><p>${station.name}</p>`
+            ))
+        .addTo(map.current)
       }
       array.push(marker);
     })
@@ -77,11 +76,50 @@ function Index() {
     }
   })
 
+  const [lat, setLat] = useState(0);
+  const [lng, setLon] = useState(0);
+
+  useEffect(() => {
+    function success(pos) {
+      console.log(pos.coords);
+      setLon(pos.coords.longitude);
+      setLat(pos.coords.latitude);
+    }
+
+
+    const marker = {
+      id: 'currentlocation',
+      instance: new mapboxgl.Marker({ color: '#ff0000' })
+        .setLngLat([lng, lat])
+        .addTo(map.current),
+    };
+
+    const [lat, setLat] = useState(0);
+    const [lng, setLon] = useState(0);
+  
+    useEffect(() => {
+      function success(pos) {
+        console.log(pos.coords);
+        setLon(pos.coords.longitude);
+        setLat(pos.coords.latitude);
+      }
+  
+      const marker = {
+        id: 'currentlocation',
+        instance: new mapboxgl.Marker({ color: '#ff0000' })
+          .setLngLat([lng, lat])
+          .addTo(map.current),
+      };
+      array.push(marker);
+      setMarkers(array);
+    });
+
+    array.push(marker);
+    setMarkers(array);
+  });
+
   return (
     <div className="Index">
-      {nameElements}
-      <Counter/>
-      <Search search={search} setSearch={setSearch}/>
       <div ref={mapContainer} className="map-container" />
       {stations.length ? filteredStations.map((station)=>(
         <Link to={`/stations/${station.id}`} key={station.id}>{station.name}</Link>

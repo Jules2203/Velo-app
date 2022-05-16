@@ -1,7 +1,8 @@
 import './Index.css';
 import Hello from '../components/Hello'
 import Counter from '../components/Counter'
-//import Search from '../components/Search'
+import Search from '../components/Search.js'
+import'../components/Search.css'
 import {useRef, useEffect, useState} from 'react';
 import {getStations as getStationsData, setStations as setStationsData} from '../data/stations';
 import {Link} from 'react-router-dom';
@@ -60,7 +61,7 @@ function Index() {
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
-              `<h3>${station.name}</h3><p>${station.free_bikes}</p>`
+              `<h3>${station.name}</h3><p>${"Beschikbare fietsen: " + station.free_bikes}</p>`
             ))
         .addTo(map.current)
       }
@@ -69,7 +70,7 @@ function Index() {
     
     const marker = {
       id: 'currentlocation',
-      instance: new mapboxgl.Marker({ color: '#ff0000' })
+      instance: new mapboxgl.Marker({ color: '#AFEEEE' })
         .setLngLat([lng, lat])
         .addTo(map.current),
     };
@@ -112,7 +113,8 @@ function Index() {
 
   return (
     <div className="Index">
-      <div ref={mapContainer} className="map-container" />
+      <div className='balk'><Search search={search} setSearch={setSearch}/></div>
+      <div ref={mapContainer} className="map-container"/>
       {stations.length ? filteredStations.map((station)=>(
         <Link to={`/stations/${station.id}`} key={station.id}>{station.name}</Link>
       )) : (
@@ -121,5 +123,4 @@ function Index() {
     </div>
   );
 }
-
 export default Index;

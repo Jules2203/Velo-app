@@ -13,7 +13,9 @@ mapboxgl.accessToken = 'pk.eyJ1IjoidmF3LWJlIiwiYSI6ImNqeXUwM21ocDA4ejcza216ZWdlY
 function Index() {
   const [stations, setStations] = useState(getStationsData());
   const [search, setSearch] = useState("");
-  const [markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState([]);  
+  const [lat, setLat] = useState(0);
+  const [lng, setLon] = useState(0);
 
   const filteredStations = stations.filter((station) => station.name.toLowerCase().indexOf(search.toLowerCase()) >= 0)
 
@@ -42,7 +44,7 @@ function Index() {
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [lng, lat],
+      center: [ 4.427308, 51.212202],
       zoom: zoom
     });
   });
@@ -50,6 +52,8 @@ function Index() {
   useEffect(() => {
     if (!map.current) return; // only add markers when map is initialized
     if (markers.length) return; // only add markers once
+    if (stations.length == 0) return
+    if (lat == 0) return
     console.log(markers);
     const array = [];
     stations.forEach((station) => {
@@ -65,7 +69,17 @@ function Index() {
       }
       array.push(marker);
     })
+    
+    const marker = {
+      id: 'currentlocation',
+      instance: new mapboxgl.Marker({ color: '#ff0000' })
+        .setLngLat([lng, lat])
+        .addTo(map.current),
+    };
+    
+    array.push(marker);
     setMarkers(array);
+    
   }, [stations, markers]);
 
   markers.forEach(marker => {
@@ -74,10 +88,12 @@ function Index() {
     } else {
       marker.instance.getElement().style.display = 'none';
     }
+    if (marker.id == 'currentlocation') {
+      marker.instance.getElement().style.display = 'block';
+    }
   })
 
-  const [lat, setLat] = useState(0);
-  const [lng, setLon] = useState(0);
+
 
   useEffect(() => {
     function success(pos) {
@@ -85,37 +101,18 @@ function Index() {
       setLon(pos.coords.longitude);
       setLat(pos.coords.latitude);
     }
+    
+    function error(err) {
+      console.warn('ERROR(' + err.code + '): ' + err.message);
+    }
 
-
-    const marker = {
-      id: 'currentlocation',
-      instance: new mapboxgl.Marker({ color: '#ff0000' })
-        .setLngLat([lng, lat])
-        .addTo(map.current),
+    var options = {
+      enableHighAccuracy: false,
+      timeout: 5000,
+      maximumAge: 0
     };
 
-    const [lat, setLat] = useState(0);
-    const [lng, setLon] = useState(0);
-  
-    useEffect(() => {
-      function success(pos) {
-        console.log(pos.coords);
-        setLon(pos.coords.longitude);
-        setLat(pos.coords.latitude);
-      }
-  
-      const marker = {
-        id: 'currentlocation',
-        instance: new mapboxgl.Marker({ color: '#ff0000' })
-          .setLngLat([lng, lat])
-          .addTo(map.current),
-      };
-      array.push(marker);
-      setMarkers(array);
-    });
-
-    array.push(marker);
-    setMarkers(array);
+    navigator.geolocation.watchPosition(success, error, options);
   });
 
   return (

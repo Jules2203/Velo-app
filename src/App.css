@@ -1,2 +1,11 @@
 .App {
 }
+
+.header{
+    margin-top: 50px;
+}
+
+nav{
+    position: fixed;
+    bottom: 0;
+}

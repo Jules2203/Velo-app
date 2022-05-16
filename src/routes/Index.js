@@ -34,18 +34,15 @@ function Index() {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-
- // const lat = 51.212202;
-  //const lng = 4.427308;
-  const zoom = 11;
+  const zoom = 15;
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [ 4.427308, 51.212202],
-      zoom: zoom
+      center: [4.427308, 51.212202],
+      zoom: zoom,
     });
   });
 
@@ -63,7 +60,7 @@ function Index() {
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
-              `<h3>${station.id}</h3><p>${station.name}</p>`
+              `<h3>${station.name}</h3><p>${station.free_bikes}</p>`
             ))
         .addTo(map.current)
       }
@@ -92,8 +89,6 @@ function Index() {
       marker.instance.getElement().style.display = 'block';
     }
   })
-
-
 
   useEffect(() => {
     function success(pos) {

@@ -11,6 +11,7 @@ import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-load
 
 mapboxgl.accessToken = 'pk.eyJ1IjoidmF3LWJlIiwiYSI6ImNqeXUwM21ocDA4ejcza216ZWdlYWIzbWMifQ.cyZ_wwDAw_7GVvR0gVy8jQ';// 'YOUR_MAPBOX_ACCESS_TOKEN';
 
+
 function Index() {
   const [stations, setStations] = useState(getStationsData());
   const [search, setSearch] = useState("");
@@ -35,14 +36,18 @@ function Index() {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const zoom = 15;
+  const zoom = 14;
 
   useEffect(() => {
+    console.log("yu")
+    if (lat == 0) return
+console.log("hi")
     if (map.current) return; // initialize map only once
+    console.log("jatoch")
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [4.427308, 51.212202],
+      style: 'mapbox://styles/apetitpatat/cl2of35m5002j14o1vp749jo4',
+      center: [lng, lat],
       zoom: zoom,
     });
   });
@@ -57,7 +62,7 @@ function Index() {
     stations.forEach((station) => {
       const marker = {
         id: station.id,
-        instance: new mapboxgl.Marker().setLngLat([station.longitude, station.latitude])
+        instance: new mapboxgl.Marker({color: "#9CA7FF"}).setLngLat([station.longitude, station.latitude])
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
             .setHTML(
@@ -70,7 +75,7 @@ function Index() {
     
     const marker = {
       id: 'currentlocation',
-      instance: new mapboxgl.Marker({ color: '#AFEEEE' })
+      instance: new mapboxgl.Marker({ color: '#8E9AAF' })
         .setLngLat([lng, lat])
         .addTo(map.current),
     };
@@ -115,12 +120,14 @@ function Index() {
     <div className="Index">
       <div className='balk'><Search search={search} setSearch={setSearch}/></div>
       <div ref={mapContainer} className="map-container"/>
-      {stations.length ? filteredStations.map((station)=>(
-        <Link to={`/stations/${station.id}`} key={station.id}>{station.name}</Link>
+      {search.length ? (
+      <div className='stations'>{stations.length ? filteredStations.map((station)=>(
+        <Link to={`/stations/${station.id}`} key={station.id}>{station.name} <br></br></Link>
       )) : (
         <div>LOADING...</div>
       )}
     </div>
-  );
-}
+      ): null}
+    </div>
+       )};
 export default Index;

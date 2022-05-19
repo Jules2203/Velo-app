@@ -1,3 +1,14 @@
-.search{
-    
+.Search{
+    border: 2px solid #7A89FF;
+    display: block;
+    height: 25px;
+    width: 200px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.container {
+    background-color: #E7E9EE;
+    padding: 10px;
+    z-index: 2;
 }

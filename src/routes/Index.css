@@ -3,8 +3,19 @@
   width: 100vw;
 }
 
-.balk {
-  background-color: aliceblue;
-  height: 40px;
-  
+.p {
+  font-size: 12px;
+}
+
+.stations {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 30px;
+  background-color: #E7E9EE;
+  border-radius: 10px;
 }

@@ -9,13 +9,37 @@
 
 .stations {
   position: absolute;
-  top: 50px;
-  left: 0px;
-  padding-bottom: 15px;
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 30px;
+  font-size: 12px;
+  top: 9.5%;
+  left: 0%;
+  padding-bottom: 4%;
+  padding-top: 3%;
+  padding-left: 4%;
+  padding-right: 4%;
+  line-height: 180%;
   background-color: #E7E9EE;
   border-radius: 10px;
+  text-align: center;
 }
+
+.Flyto {
+  position: absolute;
+  top: 85%;
+  left: 72%;
+  height: 7%;
+  width: 20%;
+    border-radius: 100em;
+    text-shadow: 2px 2px 0;
+      border-radius: 100em;
+      background: #FFFFFF;
+      border: 3px solid #7A89FF;
+  }
+
+button img {
+    height: 5%;
+    width: 10%;
+    position:fixed;
+    top: 86%;
+    left: 77.5%;
+    z-index: 10;
+  }

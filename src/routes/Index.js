@@ -128,6 +128,19 @@ console.log("hi")
       )}
     </div>
       ): null}
-    </div>
+    <div className='button'>
+      <button className='Flyto'
+                  onClick={() => {
+                    map.current.flyTo({
+                      center: [lng, lat],
+                      essential: true, // this animation is considered essential with respect to prefers-reduced-motion
+                    });
+                  }}
+                  key={stations.id}
+                > <img src={require("../images/location1.png")}/>
+                  {stations.name}
+                </button>
+    </div></div>
+    
        )};
 export default Index;
